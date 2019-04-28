@@ -1,13 +1,13 @@
-package main 
+package main
 
 import (
 	//"fmt"
+	"errors"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"html/template"
 	"regexp"
-	"errors"
 )
 
 var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
@@ -15,9 +15,8 @@ var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
 
 type Page struct {
-
 	Title string
-	Body []byte
+	Body  []byte
 }
 
 func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
@@ -44,7 +43,7 @@ func loadPage(title string) (*Page, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Page{ Title:title, Body:body}, nil
+	return &Page{Title: title, Body: body}, nil
 }
 
 func renderTemplate(w http.ResponseWriter, filename string, p *Page) {
@@ -52,11 +51,11 @@ func renderTemplate(w http.ResponseWriter, filename string, p *Page) {
 	err := templates.ExecuteTemplate(w, filename, p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return		
+		return
 	}
 }
 
-func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) (http.HandlerFunc) {
+func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		title, err := getTitle(w, r)
@@ -104,4 +103,3 @@ func main() {
 	http.HandleFunc("/save/", makeHandler(saveHandler))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
-

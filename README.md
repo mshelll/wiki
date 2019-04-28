@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/mba4cob/wiki.svg?branch=master)](https://travis-ci.com/mba4cob/wiki)
+
 # wiki
 
 We have configured automated builds in [DockerHub](https://cloud.docker.com/repository/docker/marshelabraham/wiki)

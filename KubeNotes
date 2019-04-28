@@ -1,0 +1,19 @@
+
+gcloud setup 
+# create the cluster
+# by default, 3 standard nodes are created for our cluster
+gcloud container clusters create my-cluster --zone us-west1-a
+# get the credentials so we can manage it locally through kubectl
+# creating a cluster can take a few minutes to complete
+gcloud container clusters get-credentials my-cluster \
+    --zone us-west1-a
+
+
+How to get PODNAME 
+
+PODNAME=$(kubectl get pods --output=template \
+--template="{{with index .items 0}}{{.metadata.name}}{{end}}")
+
+kubectl port-forward will create a teamprary connection between your localhost and Pod
+Pods are not accessible to outside world by default. Such pods can be tested by port-forwarding
+

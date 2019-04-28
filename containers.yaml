@@ -1,8 +1,36 @@
-apiVersion: v1
-kind: Pod
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
-name: wiki-pod
+  name: wiki-deployment
 spec:
-containers:
-- name: wiki-container
-    image: marshelabraham/wiki:latest
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wiki
+  template:
+    metadata:
+      labels:
+        app: wiki
+    spec:
+      containers:
+      - name: wiki-container
+        image: marshelabraham/wiki:latest
+        ports:
+        - containerPort: 8080
+          name: http
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: wiki-service
+spec:
+  selector:
+    app: wiki 
+  ports:
+  - protocol: TCP
+    targetPort: 8080
+    port: 80
+    name: http
+  type: LoadBalancer

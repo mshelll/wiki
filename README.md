@@ -11,3 +11,4 @@ kubectl apply -f containers.yaml
 ```
 Reference : 
 [kubernetes-101](https://medium.com/google-cloud/kubernetes-101-pods-nodes-containers-and-clusters-c1509e409e16)
+[deploy go with docker]https://blog.golang.org/docker
